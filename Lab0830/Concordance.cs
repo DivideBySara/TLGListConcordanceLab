@@ -14,6 +14,8 @@ using static System.Console;
  * 1) using static System.Console;
  * 2) A method to show all words
  * 3) A method that creates a word list with excludedWords removed
+ * 4) A method that adds words and counts to a SortedDictionary<string, int>
+ * 5) A method that starts the word count!
  * 
  * TODO: a method adds distinct words to a set.
  * 
@@ -35,7 +37,7 @@ namespace Lab0830
 
             Analyzer anlz = new Analyzer();
             List<string> words = new List<string>();
-            SortedSet<string> distinctSortedWords = new SortedSet<string>();
+            SortedDictionary<string, int> wordCounts = new SortedDictionary<string, int>();
 
             // Set up paths from args
             if (args.Length != 3)
@@ -52,20 +54,41 @@ namespace Lab0830
             
             anlz.Analyze(inputText);
 
-            // TODO: Display an alphabetical list of distinct words to the console. 
-           
-            CreateWordList(anlz.paragraphs, excludedWords, words);
-            CreateDistinctWordList(words, distinctSortedWords);
-            ShowWords(distinctSortedWords);
+            // DONE: Display an alphabetical list of distinct words to the console
+            // along with number of times it appears in the document
+            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);            
 
             ReadKey();
         } // End Main()
 
-        private static void CreateDistinctWordList(List<string> words, SortedSet<string> distinctSortedWords)
+        private static void StartWordList(List<Paragraph> paragraphs, string[] excludedWords, 
+            List<string> words, SortedDictionary<string, int> wordCounts)
+        {
+            CreateWordList(paragraphs, excludedWords, words);
+            CreateWordCounts(words, wordCounts);
+            ShowWordCounts(wordCounts);
+        }
+
+        private static void ShowWordCounts(SortedDictionary<string, int> wordCounts)
+        {
+            foreach (KeyValuePair<string, int> wordCount in wordCounts)
+            {
+                WriteLine($"{wordCount.Key}: {wordCount.Value}");
+            }
+        }
+
+        private static void CreateWordCounts(List<string> words, SortedDictionary<string, int> wordCounts)
         {
             foreach (string word in words)
             {
-                distinctSortedWords.Add(word);
+                if (!wordCounts.ContainsKey(word))
+                {
+                    wordCounts.Add(word, 1);
+                }
+                else
+                {
+                    ++wordCounts[word];
+                }
             }
         }
 
@@ -87,9 +110,11 @@ namespace Lab0830
                 }
             }
         }
-        
+
         private static void ShowWords(IEnumerable<string> words)
         {
+            WriteLine("List of words in document: ");
+
             foreach (string word in words)
             {
                 Write(word + " ");
