@@ -17,8 +17,6 @@ using static System.Console;
  * 
  * TODO: a method adds distinct words to a set.
  * 
- * Q: Do "" have any effect on the program? "" are removed by starter code in Analyzer.cs
- * 
  */ 
 
 namespace Lab0830
@@ -37,6 +35,7 @@ namespace Lab0830
 
             Analyzer anlz = new Analyzer();
             List<string> words = new List<string>();
+            SortedSet<string> distinctSortedWords = new SortedSet<string>();
 
             // Set up paths from args
             if (args.Length != 3)
@@ -56,10 +55,19 @@ namespace Lab0830
             // TODO: Display an alphabetical list of distinct words to the console. 
            
             CreateWordList(anlz.paragraphs, excludedWords, words);
-            ShowWords(words);
+            CreateDistinctWordList(words, distinctSortedWords);
+            ShowWords(distinctSortedWords);
 
             ReadKey();
         } // End Main()
+
+        private static void CreateDistinctWordList(List<string> words, SortedSet<string> distinctSortedWords)
+        {
+            foreach (string word in words)
+            {
+                distinctSortedWords.Add(word);
+            }
+        }
 
         // CreateWordList() creates a List<string> of words to analyze.
         // It first removes the excludedWords.
@@ -80,7 +88,7 @@ namespace Lab0830
             }
         }
         
-        private static void ShowWords(List<string> words)
+        private static void ShowWords(IEnumerable<string> words)
         {
             foreach (string word in words)
             {
