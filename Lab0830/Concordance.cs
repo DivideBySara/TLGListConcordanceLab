@@ -16,9 +16,11 @@ using static System.Console;
  * 3) A method that creates a word list with excludedWords removed
  * 4) A method that adds words and counts to a SortedDictionary<string, int>
  * 5) A method that starts the word count!
+ * 6) A method that displays word counts in descending order of appearance
  * 
- * TODO: display wordCounts in descending order of appearance count
- * 
+ * TODO: a method that replaces the first list's appearance count with a list of locations
+ * identified by paragraph # and sentence # within the paragraph.
+ *
  */ 
 
 namespace Lab0830
@@ -56,9 +58,9 @@ namespace Lab0830
 
             // DONE: Display an alphabetical list of distinct words to the console
             // along with number of times it appears in the document
-            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);
-            // TODO: Display wordCounts in descending order of appearance count
-
+            // DONE: Display wordCounts in descending order of appearance count
+            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);        
+            
             ReadKey();
         } // End Main()
 
@@ -68,17 +70,31 @@ namespace Lab0830
             CreateWordList(paragraphs, excludedWords, words);
             CreateWordCounts(words, wordCounts);
             ShowWordCounts(wordCounts);
+            ShowWordCountsDescOrderOfAppearance(wordCounts);
+        }
+
+        private static void ShowWordCountsDescOrderOfAppearance
+            (SortedDictionary<string, int> wordCounts)
+        {
+            WriteLine("\nWord counts in descending order of appearance: ");
+            foreach (KeyValuePair<string, int> wordCount 
+                in wordCounts.OrderByDescending(key => key.Value))
+            {
+                WriteLine($"{wordCount.Key}: {wordCount.Value}");
+            }
         }
 
         private static void ShowWordCounts(SortedDictionary<string, int> wordCounts)
         {
+            WriteLine("\nWord counts sorted alphabetically by word:");
             foreach (KeyValuePair<string, int> wordCount in wordCounts)
             {
                 WriteLine($"{wordCount.Key}: {wordCount.Value}");
             }
         }
 
-        private static void CreateWordCounts(List<string> words, SortedDictionary<string, int> wordCounts)
+        private static void CreateWordCounts
+            (List<string> words, SortedDictionary<string, int> wordCounts)
         {
             foreach (string word in words)
             {
@@ -95,7 +111,8 @@ namespace Lab0830
 
         // CreateWordList() creates a List<string> of words to analyze.
         // It first removes the excludedWords.
-        private static void CreateWordList(List<Paragraph> paragraphs, string[] excludedWords, List<string> words)
+        private static void CreateWordList
+            (List<Paragraph> paragraphs, string[] excludedWords, List<string> words)
         {           
             foreach (Paragraph paragraph in paragraphs)
             {
@@ -103,7 +120,8 @@ namespace Lab0830
                 {
                     foreach (Wordref wordref in sentence.words)
                     {
-                        if (!excludedWords.Contains<string>(wordref.word))
+                        if (!excludedWords.Contains(wordref.word) 
+                            && wordref.word != string.Empty)
                         {
                             words.Add(wordref.word);
                         } // else don't add the word                  
