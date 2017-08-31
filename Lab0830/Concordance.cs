@@ -40,6 +40,7 @@ namespace Lab0830
             Analyzer anlz = new Analyzer();
             List<string> words = new List<string>();
             SortedDictionary<string, int> wordCounts = new SortedDictionary<string, int>();
+            List<Wordref> wordrefs = new List<Wordref>();
 
             // Set up paths from args
             if (args.Length != 3)
@@ -59,6 +60,8 @@ namespace Lab0830
             // DONE: Display an alphabetical list of distinct words to the console
             // along with number of times it appears in the document
             // DONE: Display wordCounts in descending order of appearance count
+            // TODO: display first word count list, but with order of appearance replaced by
+            // paragraph and sentence number
             StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);        
             
             ReadKey();
@@ -71,6 +74,27 @@ namespace Lab0830
             CreateWordCounts(words, wordCounts);
             ShowWordCounts(wordCounts);
             ShowWordCountsDescOrderOfAppearance(wordCounts);
+        }
+
+        // CreateWordrefList() creates a List<Wordref> of words refs to analyze.
+        // It first removes the excludedWords and spaces
+        private static void CreateWordrefList
+            (List<Paragraph> paragraphs, string[] excludedWords, List<Wordref> wordrefs)
+        {
+            foreach (Paragraph paragraph in paragraphs)
+            {
+                foreach (Sentence sentence in paragraph.sentences)
+                {
+                    foreach (Wordref wordref in sentence.words)
+                    {
+                        if (!excludedWords.Contains(wordref.word)
+                            && wordref.word != string.Empty)
+                        {
+                            wordrefs.Add(wordref);
+                        } // else don't add the wordref        
+                    }
+                }
+            }
         }
 
         private static void ShowWordCountsDescOrderOfAppearance
@@ -110,7 +134,7 @@ namespace Lab0830
         }
 
         // CreateWordList() creates a List<string> of words to analyze.
-        // It first removes the excludedWords.
+        // It first removes the excludedWords and spaces.
         private static void CreateWordList
             (List<Paragraph> paragraphs, string[] excludedWords, List<string> words)
         {           
