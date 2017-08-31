@@ -17,7 +17,7 @@ using static System.Console;
  * 4) A method that adds words and counts to a SortedDictionary<string, int>
  * 5) A method that starts the word count!
  * 
- * TODO: a method adds distinct words to a set.
+ * TODO: display wordCounts in descending order of appearance count
  * 
  */ 
 
@@ -56,7 +56,8 @@ namespace Lab0830
 
             // DONE: Display an alphabetical list of distinct words to the console
             // along with number of times it appears in the document
-            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);            
+            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);
+            // TODO: Display wordCounts in descending order of appearance count
 
             ReadKey();
         } // End Main()
