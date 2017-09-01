@@ -62,18 +62,20 @@ namespace Lab0830
             // DONE: Display wordCounts in descending order of appearance count
             // TODO: display first word count list, but with order of appearance replaced by
             // paragraph and sentence number
-            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts);        
+            StartWordList(anlz.paragraphs, excludedWords, words, wordCounts, wordrefs);        
             
             ReadKey();
         } // End Main()
 
         private static void StartWordList(List<Paragraph> paragraphs, string[] excludedWords, 
-            List<string> words, SortedDictionary<string, int> wordCounts)
+            List<string> words, SortedDictionary<string, int> wordCounts, List<Wordref> wordrefs)
         {
             CreateWordList(paragraphs, excludedWords, words);
             CreateWordCounts(words, wordCounts);
             ShowWordCounts(wordCounts);
             ShowWordCountsDescOrderOfAppearance(wordCounts);
+            CreateWordrefList(paragraphs, excludedWords, wordrefs);
+            //CreateWordrefSortedDictionary(wordrefs)
         }
 
         // CreateWordrefList() creates a List<Wordref> of words refs to analyze.
